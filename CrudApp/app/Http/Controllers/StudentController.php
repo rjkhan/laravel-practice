@@ -92,6 +92,10 @@ class StudentController extends Controller
      */
     public function destroy($id)
     {
-        //
+        print($id);
+        $student =  \App\Student::destroy($id);
+        
+        $students =  \App\Student::all();
+        return view('viewstudents', ['allstudents' => $students]);
     }
 }
