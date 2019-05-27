@@ -1,8 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Redirect;
 use Illuminate\Http\Request;
+
 
 class StudentController extends Controller
 {
@@ -11,10 +12,18 @@ class StudentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+  
+    private $student_model;
+    public function __construct()
+    {
+        //Model
+        $this->student_model = "\App\Student"; 
+    }
     public function index()
     {
         //
-        $students = \App\Student::all();
+        $students = $this->student_model::all();
 
         return view('viewstudents', ['allstudents' => $students]);
     }
@@ -39,14 +48,15 @@ class StudentController extends Controller
     public function store(Request $request)
     {
         //
-        $student = new \App\Student([
+        $student = new $this->student_model([
             'first_name' => $request->first_name,
             'last_name' => $request->last_name
             ]);
    
         $student->save();
-        $students =  \App\Student::all();
-        return view('viewstudents', ['allstudents' => $students]);
+        $students =  $this->student_model::all();
+        return Redirect::to('students')->with('message', 'Added');
+        
 
     }
 
@@ -58,7 +68,7 @@ class StudentController extends Controller
      */
     public function show($id)
     {
-
+print("show");
     }
 
     /**
@@ -70,6 +80,7 @@ class StudentController extends Controller
     public function edit($id)
     {
         //
+        print("edit");
     }
 
     /**
@@ -81,7 +92,8 @@ class StudentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        
+        print("update");
     }
 
     /**
@@ -93,9 +105,7 @@ class StudentController extends Controller
     public function destroy($id)
     {
         print($id);
-        $student =  \App\Student::destroy($id);
-        
-        $students =  \App\Student::all();
-        return view('viewstudents', ['allstudents' => $students]);
+        $student =  $this->student_model::destroy($id);
+        return Redirect::to('students')->with('message', 'Added');
     }
 }
